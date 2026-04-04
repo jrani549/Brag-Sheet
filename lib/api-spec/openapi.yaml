@@ -3,26 +3,21 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: BragSheet AI Career Page Builder API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
-  - name: entries
-    description: Brag entry operations
-  - name: categories
-    description: Category operations
-  - name: summary
-    description: Summary and stats operations
+  - name: bragsheet
+    description: BragSheet AI career page operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -31,163 +26,51 @@ paths:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
 
-  /entries:
-    get:
-      operationId: listEntries
-      tags: [entries]
-      summary: List brag entries
-      parameters:
-        - name: category
-          in: query
-          schema:
-            type: string
-        - name: search
-          in: query
-          schema:
-            type: string
-      responses:
-        "200":
-          description: List of brag entries
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Entry"
+  /generate:
     post:
-      operationId: createEntry
-      tags: [entries]
-      summary: Create a brag entry
+      operationId: generateProfile
+      tags: [bragsheet]
+      summary: Parse resume and generate structured career profile
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateEntryBody"
+              $ref: "#/components/schemas/GenerateProfileBody"
       responses:
-        "201":
-          description: Created entry
+        "200":
+          description: Generated career profile
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Entry"
+                $ref: "#/components/schemas/CareerProfile"
+        "400":
+          description: Bad request
+        "500":
+          description: AI generation error
 
-  /entries/{id}:
-    get:
-      operationId: getEntry
-      tags: [entries]
-      summary: Get a single brag entry
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: Entry found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Entry"
-        "404":
-          description: Not found
-    put:
-      operationId: updateEntry
-      tags: [entries]
-      summary: Update a brag entry
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateEntryBody"
-      responses:
-        "200":
-          description: Updated entry
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Entry"
-    delete:
-      operationId: deleteEntry
-      tags: [entries]
-      summary: Delete a brag entry
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        "204":
-          description: Deleted
-
-  /categories:
-    get:
-      operationId: listCategories
-      tags: [categories]
-      summary: List all categories
-      responses:
-        "200":
-          description: List of categories
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Category"
+  /chat:
     post:
-      operationId: createCategory
-      tags: [categories]
-      summary: Create a category
+      operationId: chatAsCandidate
+      tags: [bragsheet]
+      summary: Recruiter chatbot — answers as the candidate
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateCategoryBody"
-      responses:
-        "201":
-          description: Created category
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Category"
-
-  /summary:
-    get:
-      operationId: getSummary
-      tags: [summary]
-      summary: Get bragsheet summary stats
+              $ref: "#/components/schemas/ChatBody"
       responses:
         "200":
-          description: Summary stats
+          description: Chatbot reply
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Summary"
-
-  /entries/recent:
-    get:
-      operationId: getRecentEntries
-      tags: [entries]
-      summary: Get recent entries
-      responses:
-        "200":
-          description: Recent entries
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Entry"
+                $ref: "#/components/schemas/ChatReply"
+        "400":
+          description: Bad request
+        "500":
+          description: AI error
 
 components:
   schemas:
@@ -199,138 +82,183 @@ components:
       required:
         - status
 
-    Entry:
+    GenerateProfileBody:
       type: object
       properties:
-        id:
-          type: integer
-        title:
+        resume:
           type: string
-        description:
-          type: string
-        impact:
-          type: string
-          enum: [low, medium, high]
-        categoryId:
-          type: integer
-          nullable: true
-        categoryName:
-          type: string
-          nullable: true
-        date:
-          type: string
-          format: date
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
+          description: Full resume text
       required:
-        - id
-        - title
-        - description
-        - impact
-        - date
-        - createdAt
-        - updatedAt
+        - resume
 
-    CreateEntryBody:
-      type: object
-      properties:
-        title:
-          type: string
-        description:
-          type: string
-        impact:
-          type: string
-          enum: [low, medium, high]
-        categoryId:
-          type: integer
-          nullable: true
-        date:
-          type: string
-          format: date
-      required:
-        - title
-        - description
-        - impact
-        - date
-
-    UpdateEntryBody:
-      type: object
-      properties:
-        title:
-          type: string
-        description:
-          type: string
-        impact:
-          type: string
-          enum: [low, medium, high]
-        categoryId:
-          type: integer
-          nullable: true
-        date:
-          type: string
-          format: date
-
-    Category:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        color:
-          type: string
-        entryCount:
-          type: integer
-      required:
-        - id
-        - name
-        - color
-        - entryCount
-
-    CreateCategoryBody:
+    CareerProfile:
       type: object
       properties:
         name:
           type: string
-        color:
+        initials:
           type: string
-      required:
-        - name
-        - color
-
-    Summary:
-      type: object
-      properties:
-        totalEntries:
-          type: integer
-        highImpactCount:
-          type: integer
-        mediumImpactCount:
-          type: integer
-        lowImpactCount:
-          type: integer
-        thisMonthCount:
-          type: integer
-        categoryBreakdown:
+        tag:
+          type: string
+        role:
+          type: string
+        summary:
+          type: string
+        meta:
           type: array
           items:
-            type: object
-            properties:
-              categoryName:
-                type: string
-              count:
-                type: integer
-            required:
-              - categoryName
-              - count
+            type: string
+        skills:
+          type: array
+          items:
+            $ref: "#/components/schemas/Skill"
+        techTags:
+          type: array
+          items:
+            type: string
+        experience:
+          type: array
+          items:
+            $ref: "#/components/schemas/Experience"
+        projects:
+          type: array
+          items:
+            $ref: "#/components/schemas/Project"
+        certifications:
+          type: array
+          items:
+            $ref: "#/components/schemas/Certification"
+        socials:
+          type: array
+          items:
+            $ref: "#/components/schemas/Social"
+        chatSuggestions:
+          type: array
+          items:
+            type: string
       required:
-        - totalEntries
-        - highImpactCount
-        - mediumImpactCount
-        - lowImpactCount
-        - thisMonthCount
-        - categoryBreakdown
+        - name
+        - initials
+        - tag
+        - role
+        - summary
+        - meta
+        - skills
+        - techTags
+        - experience
+        - projects
+        - certifications
+        - socials
+        - chatSuggestions
+
+    Skill:
+      type: object
+      properties:
+        name:
+          type: string
+        pct:
+          type: integer
+      required:
+        - name
+        - pct
+
+    Experience:
+      type: object
+      properties:
+        role:
+          type: string
+        company:
+          type: string
+        period:
+          type: string
+        bullets:
+          type: array
+          items:
+            type: string
+      required:
+        - role
+        - company
+        - period
+        - bullets
+
+    Project:
+      type: object
+      properties:
+        title:
+          type: string
+        desc:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+        - title
+        - desc
+        - tags
+
+    Certification:
+      type: object
+      properties:
+        name:
+          type: string
+        org:
+          type: string
+        icon:
+          type: string
+      required:
+        - name
+        - org
+        - icon
+
+    Social:
+      type: object
+      properties:
+        label:
+          type: string
+        handle:
+          type: string
+        bg:
+          type: string
+        color:
+          type: string
+        icon:
+          type: string
+      required:
+        - label
+        - handle
+        - bg
+        - color
+        - icon
+
+    ChatMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+      required:
+        - role
+        - content
+
+    ChatBody:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChatMessage"
+        system:
+          type: string
+      required:
+        - messages
+
+    ChatReply:
+      type: object
+      properties:
+        reply:
+          type: string
+      required:
+        - reply
