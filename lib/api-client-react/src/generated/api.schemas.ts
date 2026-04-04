@@ -8,3 +8,88 @@
 export interface HealthStatus {
   status: string;
 }
+
+export type EntryImpact = (typeof EntryImpact)[keyof typeof EntryImpact];
+
+export const EntryImpact = {
+  low: "low",
+  medium: "medium",
+  high: "high",
+} as const;
+
+export interface Entry {
+  id: number;
+  title: string;
+  description: string;
+  impact: EntryImpact;
+  categoryId?: number | null;
+  categoryName?: string | null;
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type CreateEntryBodyImpact =
+  (typeof CreateEntryBodyImpact)[keyof typeof CreateEntryBodyImpact];
+
+export const CreateEntryBodyImpact = {
+  low: "low",
+  medium: "medium",
+  high: "high",
+} as const;
+
+export interface CreateEntryBody {
+  title: string;
+  description: string;
+  impact: CreateEntryBodyImpact;
+  categoryId?: number | null;
+  date: string;
+}
+
+export type UpdateEntryBodyImpact =
+  (typeof UpdateEntryBodyImpact)[keyof typeof UpdateEntryBodyImpact];
+
+export const UpdateEntryBodyImpact = {
+  low: "low",
+  medium: "medium",
+  high: "high",
+} as const;
+
+export interface UpdateEntryBody {
+  title?: string;
+  description?: string;
+  impact?: UpdateEntryBodyImpact;
+  categoryId?: number | null;
+  date?: string;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  color: string;
+  entryCount: number;
+}
+
+export interface CreateCategoryBody {
+  name: string;
+  color: string;
+}
+
+export type SummaryCategoryBreakdownItem = {
+  categoryName: string;
+  count: number;
+};
+
+export interface Summary {
+  totalEntries: number;
+  highImpactCount: number;
+  mediumImpactCount: number;
+  lowImpactCount: number;
+  thisMonthCount: number;
+  categoryBreakdown: SummaryCategoryBreakdownItem[];
+}
+
+export type ListEntriesParams = {
+  category?: string;
+  search?: string;
+};

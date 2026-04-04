@@ -6,4 +6,15 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./category";
+export * from "./createCategoryBody";
+export * from "./createEntryBody";
+export * from "./createEntryBodyImpact";
+export * from "./entry";
+export * from "./entryImpact";
 export * from "./healthStatus";
+export * from "./listEntriesParams";
+export * from "./summary";
+export * from "./summaryCategoryBreakdownItem";
+export * from "./updateEntryBody";
+export * from "./updateEntryBodyImpact";

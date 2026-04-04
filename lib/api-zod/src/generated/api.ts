@@ -14,3 +14,140 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * @summary List brag entries
+ */
+export const ListEntriesQueryParams = zod.object({
+  category: zod.coerce.string().optional(),
+  search: zod.coerce.string().optional(),
+});
+
+export const ListEntriesResponseItem = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  description: zod.string(),
+  impact: zod.enum(["low", "medium", "high"]),
+  categoryId: zod.number().nullish(),
+  categoryName: zod.string().nullish(),
+  date: zod.coerce.date(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+export const ListEntriesResponse = zod.array(ListEntriesResponseItem);
+
+/**
+ * @summary Create a brag entry
+ */
+export const CreateEntryBody = zod.object({
+  title: zod.string(),
+  description: zod.string(),
+  impact: zod.enum(["low", "medium", "high"]),
+  categoryId: zod.number().nullish(),
+  date: zod.coerce.date(),
+});
+
+/**
+ * @summary Get a single brag entry
+ */
+export const GetEntryParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetEntryResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  description: zod.string(),
+  impact: zod.enum(["low", "medium", "high"]),
+  categoryId: zod.number().nullish(),
+  categoryName: zod.string().nullish(),
+  date: zod.coerce.date(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Update a brag entry
+ */
+export const UpdateEntryParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateEntryBody = zod.object({
+  title: zod.string().optional(),
+  description: zod.string().optional(),
+  impact: zod.enum(["low", "medium", "high"]).optional(),
+  categoryId: zod.number().nullish(),
+  date: zod.coerce.date().optional(),
+});
+
+export const UpdateEntryResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  description: zod.string(),
+  impact: zod.enum(["low", "medium", "high"]),
+  categoryId: zod.number().nullish(),
+  categoryName: zod.string().nullish(),
+  date: zod.coerce.date(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Delete a brag entry
+ */
+export const DeleteEntryParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List all categories
+ */
+export const ListCategoriesResponseItem = zod.object({
+  id: zod.number(),
+  name: zod.string(),
+  color: zod.string(),
+  entryCount: zod.number(),
+});
+export const ListCategoriesResponse = zod.array(ListCategoriesResponseItem);
+
+/**
+ * @summary Create a category
+ */
+export const CreateCategoryBody = zod.object({
+  name: zod.string(),
+  color: zod.string(),
+});
+
+/**
+ * @summary Get bragsheet summary stats
+ */
+export const GetSummaryResponse = zod.object({
+  totalEntries: zod.number(),
+  highImpactCount: zod.number(),
+  mediumImpactCount: zod.number(),
+  lowImpactCount: zod.number(),
+  thisMonthCount: zod.number(),
+  categoryBreakdown: zod.array(
+    zod.object({
+      categoryName: zod.string(),
+      count: zod.number(),
+    }),
+  ),
+});
+
+/**
+ * @summary Get recent entries
+ */
+export const GetRecentEntriesResponseItem = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  description: zod.string(),
+  impact: zod.enum(["low", "medium", "high"]),
+  categoryId: zod.number().nullish(),
+  categoryName: zod.string().nullish(),
+  date: zod.coerce.date(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+export const GetRecentEntriesResponse = zod.array(GetRecentEntriesResponseItem);

@@ -16,6 +16,23 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
 
+## Artifacts
+
+### Bragsheet (react-vite, `/`)
+A personal achievement tracker. Users can log wins, accomplishments, and career highlights.
+- Pages: Dashboard (`/`), Journal/Entries (`/entries`), New Entry (`/entries/new`), Entry Detail (`/entries/:id`), Categories (`/categories`)
+- Theme: Leather journal aesthetic — parchment background, cordovan leather primary, gold foil accent
+- Fonts: Fraunces (serif), Plus Jakarta Sans (sans)
+
+### API Server (`/api`)
+Express 5 backend serving Bragsheet data.
+- Routes: `/api/entries`, `/api/categories`, `/api/summary`, `/api/healthz`
+
+## DB Schema
+
+- `categories` — id, name, color, created_at
+- `entries` — id, title, description, impact (low/medium/high), category_id, date, created_at, updated_at
+
 ## Key Commands
 
 - `pnpm run typecheck` — full typecheck across all packages
