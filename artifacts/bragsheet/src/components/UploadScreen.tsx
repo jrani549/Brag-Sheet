@@ -11,32 +11,41 @@ interface UploadScreenProps {
   onGenerateSuccess: (profile: CareerProfile) => void;
 }
 
-const SAMPLE_RESUME = `Janshi Rani
-Applied Data Scientist & GenAI Engineer | Bengaluru, India
-IIT Hyderabad B.Tech | Amazon Development Centre (ex)
+const SAMPLE_RESUME = `Marcus Chen
+Full Stack Engineer & DevOps Lead | San Francisco, CA
+Stanford University B.S. Computer Science
 
-Summary: Results-driven Applied Data Scientist and GenAI Engineer with hands-on experience at Amazon Development Centre. Specialising in LLM applications, RAG pipelines, agentic AI, and NLP. Open to hybrid roles in Bengaluru.
+Summary: Full Stack Engineer with 6 years building scalable SaaS products. Led engineering teams at two Series B startups. Passionate about developer tooling, Kubernetes, and shipping products users love.
 
 Experience:
-Amazon Development Centre | Data Scientist | 2022–2024
-- Built production ML pipelines serving millions of users
-- Reduced inference latency by 30% through model optimisation
-- Led NLP and recommendation system development
+ShipFast (YC W21) | Senior Software Engineer | 2022–Present
+- Architected microservices platform handling 50M+ API requests per day
+- Reduced CI/CD pipeline time from 18 min to 4 min, saving $80K/year in compute
+- Mentored team of 8 engineers across 3 time zones
 
-NSKH Tech | Data Scientist GenAI (Consulting) | 2024–Present
-- Architecting RAG document Q&A systems using LangChain and OpenAI API
-- Designing vector search pipelines with FAISS and Pinecone
+StrideHQ | Full Stack Engineer | 2020–2022
+- Built real-time collaboration features using WebSockets serving 200K users
+- Migrated monolith to microservices with zero downtime
+- Increased test coverage from 12% to 87%
 
-Skills: Python LangChain OpenAI API RAG FAISS Pinecone HuggingFace PyTorch SQL NLP MLOps
+Freelance | Web Developer | 2018–2020
+- Delivered 15+ client projects using React and Node.js
+
+Skills: TypeScript React Node.js Go Python Kubernetes Docker PostgreSQL Redis GraphQL AWS Terraform
 
 Projects:
-1. RAG Document Q&A System — End-to-end retrieval augmented generation with citations
-2. Multi-Agent Interview Coach — LLM agents that simulate and evaluate interviews
-3. NLP Sentiment Dashboard — Real-time sentiment analysis with interactive charts
+1. OpenDeploy — Open-source Kubernetes deployment CLI with 2.4K GitHub stars
+2. ResumeAI — AI-powered resume optimizer, won 1st place at 48hr hackathon
+3. PulseBoard — Real-time engineering metrics dashboard used by 500+ teams
 
 Certifications:
-- Generative AI & LLMs — NVIDIA Deep Learning Institute
-- GenAI Practitioner — DataCamp`;
+- AWS Solutions Architect Professional
+- Certified Kubernetes Administrator (CKA)
+- Google Cloud Professional Developer
+
+GitHub: github.com/marcuschen-dev
+LinkedIn: linkedin.com/in/marcuschen
+Email: marcus@marcuschen.dev`;
 
 export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScreenProps) {
   const [resumeText, setResumeText] = useState("");
