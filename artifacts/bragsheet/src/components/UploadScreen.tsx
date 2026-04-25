@@ -1,10 +1,29 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useGenerateProfile } from "@workspace/api-client-react";
 import type { CareerProfile } from "@workspace/api-client-react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
-import { Upload, FileText, Sparkles } from "lucide-react";
+import { Upload, FileText, Sparkles, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import * as pdfjsLib from "pdfjs-dist";
+import pdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
+
+async function extractTextFromPdf(file: File): Promise<string> {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  let fullText = "";
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    const pageText = content.items
+      .map((item: any) => ("str" in item ? item.str : ""))
+      .join(" ");
+    fullText += pageText + "\n\n";
+  }
+  return fullText.trim();
+}
 
 interface UploadScreenProps {
   onGenerateStart: () => void;
@@ -49,7 +68,47 @@ Email: marcus@marcuschen.dev`;
 
 export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScreenProps) {
   const [resumeText, setResumeText] = useState("");
+  const [isParsing, setIsParsing] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const processFile = useCallback(async (file: File) => {
+    const name = file.name.toLowerCase();
+    setIsParsing(true);
+    try {
+      if (name.endsWith(".pdf") || file.type === "application/pdf") {
+        const text = await extractTextFromPdf(file);
+        if (!text) {
+          toast({
+            title: "No text found in PDF",
+            description: "This PDF may be scanned/image-based. Try pasting the text instead.",
+            variant: "destructive",
+          });
+          return;
+        }
+        setResumeText(text);
+        toast({ title: "PDF loaded", description: `${file.name} parsed successfully.` });
+      } else if (name.endsWith(".txt") || file.type === "text/plain") {
+        const text = await file.text();
+        setResumeText(text);
+        toast({ title: "File loaded", description: `${file.name} loaded successfully.` });
+      } else {
+        toast({
+          title: "Unsupported file",
+          description: "Please upload a .pdf or .txt file, or paste your resume directly.",
+          variant: "destructive",
+        });
+      }
+    } catch (err) {
+      toast({
+        title: "Could not read file",
+        description: err instanceof Error ? err.message : "Try pasting your resume directly instead.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsParsing(false);
+    }
+  }, [toast]);
 
   const { mutate, isPending } = useGenerateProfile({
     mutation: {
@@ -82,20 +141,14 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if (file && file.type === "text/plain") {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setResumeText(e.target?.result as string);
-      };
-      reader.readAsText(file);
-    } else {
-      toast({
-        title: "Unsupported file",
-        description: "Please upload a .txt file or paste your resume directly.",
-        variant: "destructive",
-      });
-    }
-  }, [toast]);
+    if (file) processFile(file);
+  }, [processFile]);
+
+  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) processFile(file);
+    e.target.value = "";
+  }, [processFile]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -130,14 +183,31 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
 
         <div className="w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
           <div 
+            role="button"
+            tabIndex={0}
             className="border-2 border-dashed border-border rounded-xl p-10 text-center hover:border-accent/50 hover:bg-accent/5 transition-colors cursor-pointer group"
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
+            onClick={() => !isParsing && fileInputRef.current?.click()}
+            onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && !isParsing) fileInputRef.current?.click(); }}
           >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".pdf,.txt,application/pdf,text/plain"
+              className="hidden"
+              onChange={handleFileSelect}
+            />
             <div className="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-              <Upload className="w-6 h-6 text-foreground" />
+              {isParsing ? (
+                <Loader2 className="w-6 h-6 text-foreground animate-spin" />
+              ) : (
+                <Upload className="w-6 h-6 text-foreground" />
+              )}
             </div>
-            <h3 className="text-lg font-medium mb-1">Drop PDF or click to upload</h3>
+            <h3 className="text-lg font-medium mb-1">
+              {isParsing ? "Reading file..." : "Drop PDF or click to upload"}
+            </h3>
             <p className="text-sm text-muted-foreground">Supports .pdf and .txt — or paste below</p>
           </div>
 
