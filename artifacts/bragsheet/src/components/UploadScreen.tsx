@@ -127,7 +127,7 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
 
   const { mutate, isPending } = useGenerateProfile({
     mutation: {
-      onSuccess: (profile) => {
+      onSuccess: (profile: CareerProfile) => {
         onGenerateSuccess(profile);
       },
       onError: () => {

@@ -303,7 +303,7 @@ export function CareerPage({ profile, onStartOver }: CareerPageProps) {
                 </div>
                 
                 <div className="space-y-3 mb-8">
-                  {profile.socials.map((social, i) => {
+                  {profile.socials.map((social: { label: string; handle: string; bg: string; color: string; icon: string }, i: number) => {
                     const Icon = social.label.toLowerCase() === 'github' ? Github : social.label.toLowerCase() === 'linkedin' ? Linkedin : Mail;
                     return (
                       <a key={i} href={social.handle} target="_blank" rel="noreferrer" className="flex items-center gap-3 p-3 rounded-lg hover:bg-background/10 transition-colors group">
@@ -373,7 +373,7 @@ export function CareerPage({ profile, onStartOver }: CareerPageProps) {
                 <div className="p-3 bg-muted/20 border-t border-border/60 space-y-3">
                   {messages.length === 1 && (
                     <div className="flex flex-wrap gap-2 px-1">
-                      {profile.chatSuggestions.map((suggestion, i) => (
+                      {profile.chatSuggestions.map((suggestion: string, i: number) => (
                         <button 
                           key={i}
                           onClick={() => handleSendMessage(suggestion)}
