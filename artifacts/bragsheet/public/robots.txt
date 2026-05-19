@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bragsheet.replit.app/sitemap.xml
