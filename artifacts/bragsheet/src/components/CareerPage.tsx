@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import type { CareerProfile } from "@workspace/api-client-react";
 import { Button } from "./ui/button";
-import { ArrowLeft, Download, Code, Globe, MapPin, Briefcase, GraduationCap, Github, Linkedin, Mail, Send, Copy, FileText, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Download, MapPin, Briefcase, GraduationCap, Github, Linkedin, Mail, Send, Copy, CheckCircle2, Share2, Twitter } from "lucide-react";
 import { useChatAsCandidate } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -17,6 +17,8 @@ export function CareerPage({ profile, onStartOver }: CareerPageProps) {
   const [isCopied, setIsCopied] = useState(false);
   const [draftEmail, setDraftEmail] = useState<string | null>(null);
   const [isDrafting, setIsDrafting] = useState(false);
+  const [emailCapture, setEmailCapture] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
 
   // Chatbot State
   const [chatInput, setChatInput] = useState("");
@@ -32,6 +34,32 @@ export function CareerPage({ profile, onStartOver }: CareerPageProps) {
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
     toast({ title: "Link copied to clipboard" });
+  };
+
+  const shareText = `🚀 Just built my AI career page in 30 seconds using @BragSheet!\n\nCheck it out → ${window.location.href}\n\nTry it free: https://bragsheet.replit.app\n#OpenToWork #AI #Career`;
+
+  const handleShareTwitter = () => {
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`, "_blank", "width=600,height=400");
+  };
+
+  const handleShareLinkedIn = () => {
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`, "_blank", "width=600,height=500");
+  };
+
+  const handleCopySocialCaption = () => {
+    navigator.clipboard.writeText(shareText);
+    toast({ title: "Caption copied!", description: "Paste it into LinkedIn, X, or anywhere else." });
+  };
+
+  const handleEmailCapture = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!emailCapture.trim()) return;
+    // Store in localStorage as lightweight persistence
+    const saved = JSON.parse(localStorage.getItem("bragsheet_emails") || "[]") as string[];
+    saved.push(emailCapture);
+    localStorage.setItem("bragsheet_emails", JSON.stringify(saved));
+    setEmailSent(true);
+    toast({ title: "Got it!", description: "We'll remind you how to access BragSheet anytime." });
   };
 
   const handleDownloadHtml = () => {
@@ -145,19 +173,29 @@ export function CareerPage({ profile, onStartOver }: CareerPageProps) {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Sticky Nav */}
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40 px-6 py-4">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Button variant="ghost" size="sm" onClick={onStartOver} className="text-muted-foreground hover:text-foreground">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4 min-w-0">
+            <Button variant="ghost" size="sm" onClick={onStartOver} className="text-muted-foreground hover:text-foreground shrink-0">
               <ArrowLeft className="w-4 h-4 mr-2" /> Start over
             </Button>
-            <div className="font-semibold tracking-tight hidden sm:block">{profile.name}</div>
+            <div className="font-semibold tracking-tight hidden sm:block truncate">{profile.name}</div>
           </div>
-          <div className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
-            <a href="#skills" className="hover:text-foreground transition-colors">Skills</a>
-            <a href="#experience" className="hover:text-foreground transition-colors">Experience</a>
-            <a href="#projects" className="hover:text-foreground transition-colors">Projects</a>
-            <a href="#contact" className="hover:text-foreground transition-colors">Contact</a>
-            <a href="#chatbot" className="text-accent hover:text-accent/80 transition-colors">Ask me</a>
+          <div className="flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-5 text-sm font-medium text-muted-foreground mr-3">
+              <a href="#skills" className="hover:text-foreground transition-colors">Skills</a>
+              <a href="#experience" className="hover:text-foreground transition-colors">Experience</a>
+              <a href="#projects" className="hover:text-foreground transition-colors">Projects</a>
+              <a href="#contact" className="hover:text-foreground transition-colors">Contact</a>
+            </div>
+            <Button size="sm" variant="outline" className="gap-1.5" onClick={handleShareTwitter}>
+              <Twitter className="w-3.5 h-3.5" /> X
+            </Button>
+            <Button size="sm" variant="outline" className="gap-1.5" onClick={handleShareLinkedIn}>
+              <Linkedin className="w-3.5 h-3.5" /> LinkedIn
+            </Button>
+            <Button size="sm" className="gap-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white border-0" onClick={handleCopySocialCaption}>
+              <Share2 className="w-3.5 h-3.5" /> Share
+            </Button>
           </div>
         </div>
       </nav>
@@ -405,42 +443,120 @@ export function CareerPage({ profile, onStartOver }: CareerPageProps) {
           </div>
         </div>
 
-        {/* Export Section */}
-        <section className="pt-12 border-t border-border/40">
-          <h2 className="text-2xl font-bold tracking-tight mb-8">Export & Share</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-card border border-border/60 p-6 rounded-xl text-center space-y-4 hover:border-accent/30 transition-colors group cursor-pointer" onClick={handleDownloadHtml}>
-              <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+        {/* Share Section */}
+        <section className="pt-12 border-t border-border/40 space-y-10">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight mb-2">Share your page</h2>
+            <p className="text-muted-foreground mb-8">Let recruiters and your network find you — one click to post.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <button
+                onClick={handleShareTwitter}
+                className="flex items-center gap-4 p-5 rounded-xl border border-border/60 bg-card hover:border-foreground/30 hover:shadow-md transition-all group text-left"
+              >
+                <div className="w-11 h-11 rounded-xl bg-black flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                  <Twitter className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <div className="font-semibold text-sm">Post on X</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">Pre-filled tweet ready to go</div>
+                </div>
+              </button>
+
+              <button
+                onClick={handleShareLinkedIn}
+                className="flex items-center gap-4 p-5 rounded-xl border border-border/60 bg-card hover:border-blue-400/50 hover:shadow-md transition-all group text-left"
+              >
+                <div className="w-11 h-11 rounded-xl bg-[#0077B5] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                  <Linkedin className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <div className="font-semibold text-sm">Share on LinkedIn</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">Perfect for job seekers</div>
+                </div>
+              </button>
+
+              <button
+                onClick={handleCopySocialCaption}
+                className="flex items-center gap-4 p-5 rounded-xl border border-border/60 bg-card hover:border-purple-400/50 hover:shadow-md transition-all group text-left"
+              >
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                  <Copy className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <div className="font-semibold text-sm">Copy caption</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">Paste anywhere — caption included</div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Download */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Export</h3>
+            <button
+              onClick={handleDownloadHtml}
+              className="flex items-center gap-4 p-5 rounded-xl border border-border/60 bg-card hover:border-accent/40 hover:shadow-sm transition-all group text-left max-w-sm"
+            >
+              <div className="w-11 h-11 rounded-xl bg-muted flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                 <Download className="w-5 h-5 text-foreground" />
               </div>
               <div>
-                <h3 className="font-semibold">Download HTML</h3>
-                <p className="text-sm text-muted-foreground mt-1">Get a standalone file</p>
+                <div className="font-semibold text-sm">Download HTML</div>
+                <div className="text-xs text-muted-foreground mt-0.5">Standalone file, host anywhere</div>
               </div>
-            </div>
-            
-            <div className="bg-card border border-border/60 p-6 rounded-xl text-center space-y-4 opacity-70 cursor-not-allowed">
-              <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto">
-                <Code className="w-5 h-5 text-foreground" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Embed snippet</h3>
-                <p className="text-sm text-muted-foreground mt-1">Coming soon</p>
-              </div>
-            </div>
+            </button>
+          </div>
 
-            <div className="bg-card border border-border/60 p-6 rounded-xl text-center space-y-4 opacity-70 cursor-not-allowed">
-              <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto">
-                <Globe className="w-5 h-5 text-foreground" />
+          {/* Email capture */}
+          <div className="rounded-2xl border border-border/60 bg-gradient-to-br from-muted/30 to-muted/10 p-8">
+            {emailSent ? (
+              <div className="flex items-center gap-3 text-emerald-600">
+                <CheckCircle2 className="w-6 h-6" />
+                <div>
+                  <div className="font-semibold">You're on the list!</div>
+                  <div className="text-sm text-muted-foreground">We'll let you know about new features and updates.</div>
+                </div>
               </div>
-              <div>
-                <h3 className="font-semibold">Deploy on Replit</h3>
-                <p className="text-sm text-muted-foreground mt-1">Coming soon</p>
-              </div>
-            </div>
+            ) : (
+              <>
+                <h3 className="font-semibold text-lg mb-1">Get notified about updates</h3>
+                <p className="text-sm text-muted-foreground mb-5">Drop your email and we'll let you know when new features land — like editable pages and custom domains.</p>
+                <form onSubmit={handleEmailCapture} className="flex gap-3 max-w-md">
+                  <Input
+                    type="email"
+                    placeholder="you@example.com"
+                    value={emailCapture}
+                    onChange={(e) => setEmailCapture(e.target.value)}
+                    className="flex-1 bg-background"
+                    required
+                  />
+                  <Button type="submit" className="bg-foreground text-background hover:bg-foreground/90 shrink-0">
+                    Notify me
+                  </Button>
+                </form>
+              </>
+            )}
           </div>
         </section>
       </main>
+
+      {/* Made with BragSheet badge */}
+      <footer className="border-t border-border/40 py-6 px-6">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-muted-foreground">
+            Generated by <a href="https://bragsheet.replit.app" target="_blank" rel="noreferrer" className="font-semibold text-foreground hover:text-accent transition-colors">BragSheet</a> — AI Career Page Builder
+          </p>
+          <a
+            href="https://bragsheet.replit.app"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 text-sm font-medium hover:border-indigo-500/40 transition-colors"
+          >
+            <span className="w-5 h-5 rounded-md bg-gradient-to-br from-indigo-500 via-purple-500 to-fuchsia-500 flex items-center justify-center text-white font-bold text-xs">B</span>
+            Made with BragSheet
+          </a>
+        </div>
+      </footer>
 
       <Dialog open={!!draftEmail} onOpenChange={(open) => !open && setDraftEmail(null)}>
         <DialogContent className="sm:max-w-md">

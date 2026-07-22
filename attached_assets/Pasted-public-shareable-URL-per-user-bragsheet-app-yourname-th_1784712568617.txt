@@ -1,0 +1,21 @@
+public shareable URL per user (bragsheet.app/yourname) that people naturally post on LinkedIn/Twitter when they're proud of it — this is the single biggest lever. If it already does this, make the URL a hero feature, not an afterthought.
+"Made with BragSheet" badge/watermark on generated pages (removable if you ever add a paid tier) — every shared page becomes an ad.
+A one-click "share my career page" button with pre-filled social copy, so the friction to post is near zero.
+2. Launch-day tactics for early traction
+Product Hunt launch — "resume → career page in 30 seconds, powered by Claude" is a strong PH pitch (AI + practical utility + speed).
+r/resumes, r/cscareerquestions, r/GetEmployed, LinkedIn creator posts — genuinely useful tools do well in job-seeker communities right now.
+Before/after posts — resume PDF next to the generated page is a great visual hook for X/LinkedIn.
+3. SEO — you're set up but not filled in
+Meta tags are good; now you need actual content pages to rank: a landing page section explaining the value prop, example career pages (with permission), maybe a blog post like "How to turn your resume into a portfolio site."
+The canonical URL points to bragsheet.replit.app — worth checking that's the domain you actually want indexed long-term, since .replit.app subdomains can look less trustworthy than a custom domain (even a cheap one like bragsheet.io) for click-through rate in search results. 
+replit
+4. Reduce first-use friction
+"No signup needed" is great — keep that. Make sure the very first interaction (upload resume → see result) is under a few clicks with no dead ends. 
+replit
+Add a sample/demo mode ("see an example") for people who land on the page before they've got their resume handy — reduces bounce.
+5. Retention/return hooks
+Since there's no signup, there's no way to bring people back. Consider a lightweight, optional email capture ("get a link to edit this later") — turns one-time visitors into a list you can re-engage.
+
+I could only pull the page's metadata (not the rendered UI) since it's likely a JS-rendered app. If you screenshot the actual homepage or share the code, I can give much sharper, specific feedback — e.g., is the value prop clear in 3 seconds, is the CTA above the fold, does the AI chatbot feature actually get used or is it buried.
+
+c
