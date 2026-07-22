@@ -210,7 +210,7 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
                 <Star key={i} className="w-3.5 h-3.5 fill-current" />
               ))}
             </span>
-            <span className="text-muted-foreground">Powered by Claude AI</span>
+            <span className="text-muted-foreground">The AI career page that gets you noticed</span>
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-[1.05]">
@@ -225,7 +225,7 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
           </h1>
 
           <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            BragSheet uses AI to instantly generate a beautiful personal portfolio from your resume — complete with animated skill graphs, project showcase, and a recruiter chatbot that answers as you.
+            Paste your resume. Get a polished career page with animated skills, live project cards, and an AI chatbot that answers recruiter questions as you — the page that actually gets responses.
           </p>
 
           {/* Trust strip */}
@@ -284,10 +284,10 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
                 </div>
               </div>
               <h3 className="text-xl font-semibold mb-1.5">
-                {isParsing ? "Reading your resume..." : "Drop your PDF or click to upload"}
+                {isParsing ? "Reading your resume..." : "Drop your resume here"}
               </h3>
               <p className="text-sm text-muted-foreground">
-                Supports <span className="font-medium text-foreground">.pdf</span> and <span className="font-medium text-foreground">.txt</span> — or paste your text below
+                <span className="font-medium text-foreground">.pdf</span> or <span className="font-medium text-foreground">.txt</span> — or paste your text below
               </p>
             </div>
           </div>
@@ -330,7 +330,7 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
                   </>
                 ) : (
                   <>
-                    Generate my BragSheet <ArrowRight className="w-4 h-4 ml-2" />
+                    Build my career page <ArrowRight className="w-4 h-4 ml-2" />
                   </>
                 )}
               </Button>
@@ -351,28 +351,28 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
         <div className="w-full max-w-4xl pt-8">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold tracking-tight mb-2">How it works</h2>
-            <p className="text-muted-foreground">Three steps. Thirty seconds.</p>
+            <p className="text-muted-foreground">Three steps. No fluff.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               {
                 step: "01",
-                title: "Drop your resume",
-                desc: "PDF, plain text, or paste from anywhere — we handle it all.",
+                title: "Upload your resume",
+                desc: "PDF, plain text, or paste from LinkedIn — any format works.",
                 icon: Upload,
                 color: "from-indigo-500 to-purple-500",
               },
               {
                 step: "02",
-                title: "AI does the magic",
-                desc: "Claude reads your resume and structures it into a beautiful page.",
+                title: "AI builds your page",
+                desc: "Claude parses your experience and crafts a complete, structured career page in seconds.",
                 icon: Sparkles,
                 color: "from-purple-500 to-fuchsia-500",
               },
               {
                 step: "03",
-                title: "Share your page",
-                desc: "Download HTML, embed it anywhere, or send recruiters the live link.",
+                title: "Share with recruiters",
+                desc: "Post on LinkedIn, copy the link, or download the HTML to host anywhere.",
                 icon: Share2,
                 color: "from-fuchsia-500 to-pink-500",
               },
@@ -393,7 +393,7 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
         </div>
 
         <footer className="text-center text-sm text-muted-foreground pt-6 pb-4">
-          Powered by Claude AI
+          © 2025 BragSheet · Powered by Claude AI
         </footer>
       </main>
     </div>
