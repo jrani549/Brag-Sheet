@@ -393,7 +393,7 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
         </div>
 
         <footer className="text-center text-sm text-muted-foreground pt-6 pb-4">
-          Built with <span className="text-pink-500">♥</span> using Claude AI
+          Powered by Claude AI
         </footer>
       </main>
     </div>
