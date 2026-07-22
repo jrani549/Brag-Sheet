@@ -36,7 +36,7 @@ export function CareerPage({ profile, onStartOver }: CareerPageProps) {
     toast({ title: "Link copied to clipboard" });
   };
 
-  const shareText = `🚀 Just built my AI career page in 30 seconds using @BragSheet!\n\nCheck it out → ${window.location.href}\n\nTry it free: https://bragsheet.replit.app\n#OpenToWork #AI #Career`;
+  const shareText = `🚀 Just built my AI career page in 30 seconds using @BragSheet!\n\nCheck it out → ${window.location.href}\n\nBuild yours: https://bragsheet.replit.app\n#OpenToWork #AI #Career`;
 
   const handleShareTwitter = () => {
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`, "_blank", "width=600,height=400");

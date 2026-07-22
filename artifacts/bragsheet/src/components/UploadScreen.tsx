@@ -193,7 +193,7 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            Live · Free to use
+            Live
           </span>
           <Button variant="outline" size="sm" onClick={() => setResumeText(SAMPLE_RESUME)}>
             <Sparkles className="w-3.5 h-3.5 mr-1.5" /> Load sample
@@ -232,7 +232,7 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
           <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-3 pt-2 text-sm text-muted-foreground">
             <span className="inline-flex items-center gap-1.5"><Clock className="w-4 h-4" /> ~30 seconds</span>
             <span className="inline-flex items-center gap-1.5"><ShieldCheck className="w-4 h-4" /> No signup needed</span>
-            <span className="inline-flex items-center gap-1.5"><Zap className="w-4 h-4" /> 100% free</span>
+            <span className="inline-flex items-center gap-1.5"><Zap className="w-4 h-4" /> Instant results</span>
           </div>
 
           {/* Feature pills */}
