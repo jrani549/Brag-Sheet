@@ -210,7 +210,7 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
                 <Star key={i} className="w-3.5 h-3.5 fill-current" />
               ))}
             </span>
-            <span className="text-muted-foreground">Powered by Claude AI · Built on Replit</span>
+            <span className="text-muted-foreground">Powered by Claude AI</span>
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-[1.05]">
@@ -393,7 +393,7 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
         </div>
 
         <footer className="text-center text-sm text-muted-foreground pt-6 pb-4">
-          Built with <span className="text-pink-500">♥</span> using Claude AI · Replit Agent 4 Buildathon
+          Built with <span className="text-pink-500">♥</span> using Claude AI
         </footer>
       </main>
     </div>
