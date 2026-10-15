@@ -62,7 +62,7 @@ catalog:
   tailwind-merge: ^3.3.1
   tailwindcss: ^4.1.14
   tsx: ^4.21.0
-  vite: ^7.3.2
+  vite: ^7.3.5
   zod: ^3.25.76
 
 autoInstallPeers: false
@@ -156,7 +156,7 @@ overrides:
   "@expo/ngrok-bin>@expo/ngrok-bin-win32-x64": "-"
   # drizzle-kit uses esbuild internally on an older version that's vulnerable, this overrides it
   "@esbuild-kit/esm-loader": "npm:tsx@^4.21.0"
-  esbuild: "0.27.3"
+  esbuild: "0.28.1"
   # Security: pin transitive deps to patched versions to resolve audit advisories.
   # picomatch <2.3.2 (GHSA-c2c7-rcm5-vvqj, GHSA-3v7f-55p6-f55p) — pulled in via micromatch/fast-glob
   "picomatch@<2.3.2": "2.3.2"
@@ -170,5 +170,19 @@ overrides:
   "postcss@<8.5.10": "8.5.10"
   # yaml >=2.0.0 <2.8.3 (GHSA-48c2-rrv3-qjmp) — pulled in via vite
   "yaml@>=2.0.0 <2.8.3": "2.8.3"
-  # brace-expansion >=2.0.0 <2.0.3 (GHSA-f886-m6hf-6m8v) — pulled in via minimatch/typedoc/orval
-  "brace-expansion@>=2.0.0 <2.0.3": "2.1.0"
+  # brace-expansion <2.1.2 (GHSA-f886-m6hf-6m8v, GHSA-3jxr-9vmj-r5cp) — pulled in via minimatch/typedoc/orval
+  "brace-expansion@<2.1.2": "2.1.2"
+  # fast-uri <3.1.4 (GHSA-4c8g-83qw-93j6, GHSA-q3j6-qgpj-74h6, GHSA-v2hh-gcrm-f6hx, GHSA-v39h-62p7-jpjc) — pulled in via orval>@scalar/openapi-parser>ajv
+  "fast-uri@<3.1.4": "3.1.4"
+  # linkify-it <5.0.2 (GHSA-22p9-wv53-3rq4, GHSA-v245-v573-v5vm) — pulled in via orval>typedoc>markdown-it
+  "linkify-it@<5.0.2": "5.0.2"
+  # js-yaml <4.3.0 (GHSA-52cp-r559-cp3m, GHSA-h67p-54hq-rp68) — pulled in via orval
+  "js-yaml@<4.3.0": "4.3.0"
+  # markdown-it <14.2.0 (GHSA-6v5v-wf23-fmfq) — pulled in via orval>typedoc
+  "markdown-it@<14.2.0": "14.3.0"
+  # qs <6.15.3 (GHSA-q8mj-m7cp-5q26) — pulled in via express
+  "qs@<6.15.3": "6.15.3"
+  # @babel/core <7.29.6 (GHSA-4x5r-pxfx-6jf8) — pulled in via @vitejs/plugin-react
+  "@babel/core@<7.29.6": "7.29.7"
+  # body-parser <2.3.0 (GHSA-v422-hmwv-36x6) — pulled in via express
+  "body-parser@<2.3.0": "2.3.0"
