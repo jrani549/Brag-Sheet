@@ -31,7 +31,7 @@ export function LoadingScreen() {
       <header className="border-b border-border/40 py-4 px-6 flex items-center justify-between bg-background/95 sticky top-0 z-50">
         <div className="flex items-center gap-2 font-semibold text-lg tracking-tight">
           <div className="w-6 h-6 rounded bg-foreground text-background flex items-center justify-center font-bold text-sm">B</div>
-          BragSheet
+          career_page
         </div>
       </header>
 

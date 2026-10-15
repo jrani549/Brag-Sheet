@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "Bragsheet"
+title = "career_page"
 version = "1.0.0"
 id = "artifacts/bragsheet"
 router = "path"
