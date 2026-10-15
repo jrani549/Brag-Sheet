@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import type { CareerProfile } from "@workspace/api-client-react";
 import { Button } from "./ui/button";
-import { ArrowLeft, Download, MapPin, Briefcase, GraduationCap, Github, Linkedin, Mail, Send, Copy, CheckCircle2, Share2, Twitter } from "lucide-react";
+import { ArrowLeft, Download, MapPin, Briefcase, GraduationCap, Github, Linkedin, Mail, Send, Copy, CheckCircle2, Share2, Twitter, FileText } from "lucide-react";
 import { useChatAsCandidate } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
