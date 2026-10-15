@@ -185,7 +185,7 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
       <header className="border-b border-border/40 py-4 px-6 flex items-center justify-between bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/40 sticky top-0 z-50">
         <div className="flex items-center gap-2.5 font-semibold text-lg tracking-tight">
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 via-purple-500 to-fuchsia-500 text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-purple-500/30">B</div>
-          career_page
+          Career Page
         </div>
         <div className="flex items-center gap-3">
           <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
@@ -393,7 +393,7 @@ export function UploadScreen({ onGenerateStart, onGenerateSuccess }: UploadScree
         </div>
 
         <footer className="text-center text-sm text-muted-foreground pt-6 pb-4">
-          © 2025 career_page · Powered by Claude AI
+          © 2025 Career Page · Powered by Claude AI
         </footer>
       </main>
     </div>
