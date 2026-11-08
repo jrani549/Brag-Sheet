@@ -62,8 +62,8 @@ catalog:
   tailwind-merge: ^3.3.1
   tailwindcss: ^4.1.14
   tsx: ^4.21.0
-  vite: ^7.3.5
-  zod: ^3.25.76
+  vite: ^7.3.7
+  zod: ^4.6.7
 
 autoInstallPeers: false
 
@@ -172,17 +172,19 @@ overrides:
   "yaml@>=2.0.0 <2.8.3": "2.8.3"
   # brace-expansion <2.1.2 (GHSA-f886-m6hf-6m8v, GHSA-3jxr-9vmj-r5cp) — pulled in via minimatch/typedoc/orval
   "brace-expansion@<2.1.2": "2.1.2"
-  # fast-uri <3.1.4 (GHSA-4c8g-83qw-93j6, GHSA-q3j6-qgpj-74h6, GHSA-v2hh-gcrm-f6hx, GHSA-v39h-62p7-jpjc) — pulled in via orval>@scalar/openapi-parser>ajv
-  "fast-uri@<3.1.4": "3.1.4"
+  # fast-uri: keep AJV's URI parser on the patched 3.x line.
+  "fast-uri@<3.1.9": "3.1.9"
   # linkify-it <5.0.2 (GHSA-22p9-wv53-3rq4, GHSA-v245-v573-v5vm) — pulled in via orval>typedoc>markdown-it
   "linkify-it@<5.0.2": "5.0.2"
   # js-yaml <4.3.0 (GHSA-52cp-r559-cp3m, GHSA-h67p-54hq-rp68) — pulled in via orval
   "js-yaml@<4.3.0": "4.3.0"
-  # markdown-it <14.2.0 (GHSA-6v5v-wf23-fmfq) — pulled in via orval>typedoc
-  "markdown-it@<14.2.0": "14.3.0"
-  # qs <6.15.3 (GHSA-q8mj-m7cp-5q26) — pulled in via express
-  "qs@<6.15.3": "6.15.3"
+  # markdown-it: patched HTML rendering and parsing, without a major upgrade.
+  "markdown-it@<14.3.3": "14.3.3"
+  # qs: patched comma-array serialization (GHSA-6pq8-jhm2-2vcw).
+  "qs@<6.16.1": "6.17.1"
   # @babel/core <7.29.6 (GHSA-4x5r-pxfx-6jf8) — pulled in via @vitejs/plugin-react
   "@babel/core@<7.29.6": "7.29.7"
-  # body-parser <2.3.0 (GHSA-v422-hmwv-36x6) — pulled in via express
-  "body-parser@<2.3.0": "2.3.0"
+  # body-parser: reject malformed compressed bodies without crashing Express.
+  "body-parser@>=2.0.0 <2.4.0": "2.4.0"
+  # Zod's collection-validation fix has no 3.x backport; align transitive users.
+  "zod@<4.6.6": "4.6.7"
